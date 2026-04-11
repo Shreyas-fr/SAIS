@@ -53,7 +53,7 @@ export default function LandingPage() {
             <span style={{ fontWeight: 800, fontSize: '20px', letterSpacing: '-0.5px' }}>SAIS</span>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '32px', fontSize: '14px', fontWeight: 500, color: '#9CA3AF' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '32px', fontSize: '14px', fontWeight: 500, color: '#9CA3AF' }} className="hidden md:flex">
             <a href="#features" style={{ textDecoration: 'none', color: 'inherit', transition: 'color 0.2s' }}
                onMouseEnter={e => e.target.style.color = '#fff'}
                onMouseLeave={e => e.target.style.color = '#9CA3AF'}>Features</a>

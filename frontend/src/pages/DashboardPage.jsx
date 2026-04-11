@@ -289,7 +289,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       {loading ? (
         <div className="space-y-8">
           {/* Skeleton header */}
@@ -298,11 +298,11 @@ export default function DashboardPage() {
             <div className="skeleton h-4 w-40" />
           </div>
           {/* Skeleton stat cards */}
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <StatSkeleton /><StatSkeleton /><StatSkeleton /><StatSkeleton />
           </div>
           {/* Skeleton panels */}
-          <div className="grid grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <CardSkeleton className="col-span-2" />
             <CardSkeleton />
           </div>
@@ -328,7 +328,7 @@ export default function DashboardPage() {
       <EndOfDaySummary data={endOfDaySummary} />
 
       {/* Stats row */}
-      <div className="grid grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <StatCard index={0} title="Open Assignments" value={activeAssignments.length} sub="Including new drafts" accent="bg-emerald-500/10 text-emerald-400" icon={BookOpen} />
         <StatCard index={1} title="Avg Attendance" value={`${avgAttendance}%`} sub={lowAttendance > 0 ? `${lowAttendance} subject${lowAttendance > 1 ? 's' : ''} at risk` : 'All good'} accent="bg-emerald-400/10 text-emerald-400" icon={CalendarCheck} />
         <StatCard index={2} title="Activities" value={activities.length} sub={conflictCount > 0 ? `${conflictCount} conflict${conflictCount > 1 ? 's' : ''}` : 'No conflicts'} accent="bg-blue-400/10 text-blue-400" icon={Trophy} />
@@ -336,13 +336,13 @@ export default function DashboardPage() {
       </div>
 
       {/* Main grid */}
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Upcoming assignments */}
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.35, ease }}
-          className="col-span-2 bg-white/[0.02] border border-white/10 hover:border-emerald-500/20 rounded-2xl p-6 transition-all"
+          className="lg:col-span-2 bg-white/[0.02] border border-white/10 hover:border-emerald-500/20 rounded-2xl p-4 md:p-6 transition-all"
         >
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-display text-lg text-white">Assignments</h2>
@@ -359,7 +359,7 @@ export default function DashboardPage() {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4, ease }}
-          className="bg-white/[0.02] border border-white/10 hover:border-emerald-500/20 rounded-2xl p-6 transition-all"
+          className="bg-white/[0.02] border border-white/10 hover:border-emerald-500/20 rounded-2xl p-4 md:p-6 transition-all"
         >
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-display text-lg text-white">AI Alerts</h2>
@@ -396,7 +396,7 @@ export default function DashboardPage() {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.45, ease }}
-          className="col-span-2 bg-white/[0.02] border border-white/10 hover:border-emerald-500/20 rounded-2xl p-6 transition-all"
+          className="lg:col-span-2 bg-white/[0.02] border border-white/10 hover:border-emerald-500/20 rounded-2xl p-4 md:p-6 transition-all"
         >
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-display text-lg text-white">Attendance by Subject</h2>
@@ -443,21 +443,21 @@ export default function DashboardPage() {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.55, ease }}
-          className="col-span-2 bg-white/[0.02] border border-white/10 hover:border-emerald-500/20 rounded-2xl p-6 transition-all"
+          className="lg:col-span-2 bg-white/[0.02] border border-white/10 hover:border-emerald-500/20 rounded-2xl p-4 md:p-6 transition-all"
         >
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
             <h2 className="font-display text-lg text-white">Academic Calendar</h2>
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
-                className="px-3 py-1.5 text-xs rounded-lg bg-white/5 text-gray-300 hover:bg-white/10 border border-white/10"
+                className="px-3 py-1.5 min-h-[36px] text-xs rounded-lg bg-white/5 text-gray-300 hover:bg-white/10 border border-white/10"
               >
                 Prev
               </button>
-              <span className="text-sm text-gray-300 min-w-[130px] text-center">{format(currentMonth, 'MMMM yyyy')}</span>
+              <span className="text-sm text-gray-300 min-w-[120px] text-center">{format(currentMonth, 'MMM yyyy')}</span>
               <button
                 onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
-                className="px-3 py-1.5 text-xs rounded-lg bg-white/5 text-gray-300 hover:bg-white/10 border border-white/10"
+                className="px-3 py-1.5 min-h-[36px] text-xs rounded-lg bg-white/5 text-gray-300 hover:bg-white/10 border border-white/10"
               >
                 Next
               </button>
@@ -472,13 +472,16 @@ export default function DashboardPage() {
             <span className="flex items-center gap-1.5 text-[10px] text-slate-400"><span className="w-2 h-2 rounded-full bg-slate-500/60 flex-shrink-0" />Academic</span>
           </div>
 
-          <div className="grid grid-cols-7 gap-2 mb-2">
+          <div className="grid grid-cols-7 gap-1 md:gap-2 mb-2">
             {weekdayLabels.map((label) => (
-              <div key={label} className="text-xs text-slate-500 text-center py-1">{label}</div>
+              <div key={label} className="text-[10px] md:text-xs text-slate-500 text-center py-1">
+                <span className="hidden sm:inline">{label}</span>
+                <span className="sm:hidden">{label[0]}</span>
+              </div>
             ))}
           </div>
 
-          <div className="grid grid-cols-7 gap-2">
+          <div className="grid grid-cols-7 gap-1 md:gap-2 overflow-x-auto">
             {calendarDays.map((day) => {
               const key = format(day, 'yyyy-MM-dd')
               const dayEvents = eventsByDate[key] || []
@@ -486,7 +489,7 @@ export default function DashboardPage() {
               return (
                 <div
                   key={key}
-                  className={`min-h-[90px] rounded-xl border p-2 ${isInMonth ? 'border-white/10 bg-white/[0.03]' : 'border-white/5 bg-black/30'}`}
+                  className={`min-h-[60px] md:min-h-[90px] rounded-xl border p-1 md:p-2 ${isInMonth ? 'border-white/10 bg-white/[0.03]' : 'border-white/5 bg-black/30'}`}
                 >
                   <div className="flex items-center justify-between mb-1">
                     <span className={`text-xs ${isInMonth ? 'text-gray-300' : 'text-gray-600'}`}>{format(day, 'd')}</span>
@@ -513,7 +516,7 @@ export default function DashboardPage() {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.6, ease }}
-          className="bg-white/[0.02] border border-white/10 hover:border-emerald-500/20 rounded-2xl p-6 transition-all"
+          className="bg-white/[0.02] border border-white/10 hover:border-emerald-500/20 rounded-2xl p-4 md:p-6 transition-all"
         >
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-display text-lg text-white">Activities</h2>

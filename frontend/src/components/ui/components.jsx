@@ -51,7 +51,7 @@ export function Button({
   children, variant = "primary", size = "md",
   loading = false, className, disabled, ...props
 }) {
-  const base = "inline-flex items-center justify-center gap-2 font-medium rounded-xl transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed";
+  const base = "inline-flex items-center justify-center gap-2 font-medium rounded-xl transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]";
   const variants = {
     primary:  "bg-accent text-ink hover:bg-accent-hover active:scale-[0.98]",
     ghost:    "bg-transparent text-gray-400 hover:bg-white/5 hover:text-white",
@@ -129,7 +129,7 @@ export function Modal({ open, onClose, title, children }) {
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div className="bg-black/80 border border-white/10 rounded-2xl w-full max-w-md shadow-hover animate-slide-up backdrop-blur-md">
+      <div className="bg-black/80 border border-white/10 rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto shadow-hover animate-slide-up backdrop-blur-md">
         <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
           <h2 className="text-paper font-display font-semibold">{title}</h2>
           <button onClick={onClose} className="text-slate-500 hover:text-paper">
@@ -163,12 +163,12 @@ export function EmptyState({ icon: Icon, message, action }) {
 // ── PageHeader ────────────────────────────────────────────────────────────
 export function PageHeader({ title, subtitle, action }) {
   return (
-    <div className="flex items-start justify-between mb-8">
+    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-6 md:mb-8">
       <div>
-        <h1 className="text-paper font-display font-bold text-2xl">{title}</h1>
+        <h1 className="text-paper font-display font-bold text-2xl md:text-3xl">{title}</h1>
         {subtitle && <p className="text-slate-400 text-sm mt-1">{subtitle}</p>}
       </div>
-      {action && <div>{action}</div>}
+      {action && <div className="flex-shrink-0">{action}</div>}
     </div>
   );
 }

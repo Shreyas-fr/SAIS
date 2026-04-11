@@ -119,7 +119,7 @@ export default function DocumentsPage() {
   }, [selectedDocId, documents]);
 
   return (
-    <div>
+    <div className="p-4 md:p-8">
       <PageHeader
         title="Documents"
         subtitle="Upload PDFs or images — AI extracts assignments automatically"

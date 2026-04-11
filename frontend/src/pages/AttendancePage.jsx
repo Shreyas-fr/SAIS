@@ -122,7 +122,7 @@ export default function AttendancePage() {
 
   if (loading) {
     return (
-      <div className="p-8 max-w-7xl mx-auto">
+      <div className="p-4 md:p-8 max-w-7xl mx-auto">
         <div className="skeleton h-8 w-48 mb-2" />
         <div className="skeleton h-4 w-32 mb-8" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -139,7 +139,7 @@ export default function AttendancePage() {
   }
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
+    <div className="p-4 md:p-8 max-w-7xl mx-auto">
       <PageHeader
         title="Attendance Tracker"
         subtitle={`Today is ${format(new Date(), "MMMM do, yyyy")}`}

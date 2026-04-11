@@ -417,9 +417,9 @@ export default function ChatBotPage() {
   }
 
   return (
-    <div className="flex h-screen p-6 gap-0">
+    <div className="flex flex-col md:flex-row h-[calc(100vh-4rem)] md:h-screen p-3 md:p-6 gap-3 md:gap-0">
       {/* ── Sidebar ── */}
-      <div className="w-64 bg-white/[0.02] border border-white/10 rounded-l-2xl flex flex-col backdrop-blur-md">
+      <div className="md:w-64 w-full md:flex-shrink-0 bg-white/[0.02] border border-white/10 md:rounded-l-2xl rounded-2xl md:rounded-r-none flex flex-col backdrop-blur-md overflow-hidden">
         <div className="px-4 py-3 border-b border-white/10">
           <h2 className="text-white font-semibold text-sm flex items-center gap-2">
             <Bot size={16} className="text-emerald-500" />
@@ -446,7 +446,7 @@ export default function ChatBotPage() {
       </div>
 
       {/* ── Main chat area ── */}
-      <div className="flex-1 flex flex-col bg-black rounded-r-2xl border-y border-r border-white/10">
+      <div className="flex-1 flex flex-col bg-black md:rounded-r-2xl rounded-2xl md:rounded-l-none border-y border-r border-white/10 min-h-0">
         {/* Header */}
         <div className="px-6 py-3 border-b border-white/10 flex items-center gap-3">
           {activeMode === 'viva' ? (

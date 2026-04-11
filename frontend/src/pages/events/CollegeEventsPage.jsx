@@ -103,17 +103,17 @@ export default function CollegeEventsPage() {
   }
 
   return (
-    <div className="p-8 max-w-6xl mx-auto">
+    <div className="p-4 md:p-8 max-w-6xl mx-auto">
       <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
         <h1 className="font-display text-3xl text-white mb-2">College Academic Events</h1>
         <p className="text-slate-400 mb-6">Select a college and fetch latest notices/exam/calendar events.</p>
       </motion.div>
 
-      <div className="flex gap-3 mb-6">
+      <div className="flex flex-col sm:flex-row gap-3 mb-6">
         <select
           value={college}
           onChange={handleCollegeChange}
-          className="bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-gray-500 focus:border-emerald-500 focus:outline-none"
+          className="w-full sm:w-auto bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 min-h-[44px] text-white placeholder-gray-500 focus:border-emerald-500 focus:outline-none"
         >
           {colleges.map((c) => (
             <option key={c.name} value={c.name}>{c.name}</option>
@@ -122,7 +122,7 @@ export default function CollegeEventsPage() {
         <button
           onClick={handleFetch}
           disabled={loading}
-          className="px-4 py-2 bg-emerald-500 text-black rounded-xl font-semibold hover:bg-emerald-600 border border-emerald-500/20 disabled:opacity-50 transition-all"
+          className="w-full sm:w-auto px-4 py-2.5 min-h-[44px] bg-emerald-500 text-black rounded-xl font-semibold hover:bg-emerald-600 border border-emerald-500/20 disabled:opacity-50 transition-all"
         >
           {loading ? 'Fetching...' : 'Fetch Events'}
         </button>
@@ -141,7 +141,7 @@ export default function CollegeEventsPage() {
               const row = normalizeRow(event)
               return (
                 <>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-start gap-2 justify-between">
               <h3 className="text-white font-semibold">{row.title}</h3>
               <span className="text-xs px-2 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-md">{row.type}</span>
             </div>

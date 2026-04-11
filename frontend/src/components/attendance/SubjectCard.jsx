@@ -98,24 +98,24 @@ export function SubjectCard({ summary, onMark, onViewHistory, onViewRecovery, on
                 </div>
 
                 {/* Bottom Actions */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-4 gap-2">
                     <button
                         onClick={() => onViewHistory(subject_id, subject_name)}
-                        className="sm:col-span-3 w-full flex items-center justify-center gap-2 py-2 text-xs font-bold text-slate-400 hover:text-paper hover:bg-slate-800 rounded-xl transition-all"
+                        className="sm:col-span-2 w-full flex items-center justify-center gap-2 py-3 min-h-[44px] text-xs font-bold text-slate-400 hover:text-paper hover:bg-slate-800 rounded-xl transition-all"
                     >
                         <Calendar size={14} /> View History &amp; Attendance Log
                     </button>
 
                     <button
                         onClick={() => onEditSubject?.(summary)}
-                        className="w-full flex items-center justify-center gap-2 py-2 text-xs font-bold text-emerald-400 hover:text-emerald-300 hover:bg-emerald-400/10 rounded-xl transition-all"
+                        className="w-full flex items-center justify-center gap-2 py-3 min-h-[44px] text-xs font-bold text-emerald-400 hover:text-emerald-300 hover:bg-emerald-400/10 rounded-xl transition-all"
                     >
                         <Pencil size={13} /> Edit
                     </button>
 
                     <button
                         onClick={() => onDeleteSubject?.(summary)}
-                        className="w-full flex items-center justify-center gap-2 py-2 text-xs font-bold text-rose-400 hover:text-rose-300 hover:bg-rose-400/10 rounded-xl transition-all"
+                        className="w-full flex items-center justify-center gap-2 py-3 min-h-[44px] text-xs font-bold text-rose-400 hover:text-rose-300 hover:bg-rose-400/10 rounded-xl transition-all"
                     >
                         <Trash2 size={13} /> Delete
                     </button>

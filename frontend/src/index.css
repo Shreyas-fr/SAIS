@@ -13,12 +13,25 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
+    overflow-x: hidden; /* prevent horizontal scroll on mobile */
   }
 
   body {
     font-family: 'DM Sans', sans-serif;
     background: #000000;
     color: #F5F2EC;
+    overflow-x: hidden; /* prevent horizontal scroll on mobile */
+  }
+
+  /* Remove tap highlight on mobile for buttons */
+  button, a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Ensure images never overflow their container */
+  img {
+    max-width: 100%;
+    height: auto;
   }
 
   /* Custom scrollbar */

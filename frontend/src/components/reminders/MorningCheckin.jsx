@@ -89,7 +89,7 @@ export default function MorningCheckin({ data }) {
             {!allMarked && (
               <button
                 onClick={handleMarkAllPresent}
-                className="text-xs font-semibold px-3 py-1.5 bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 hover:text-emerald-200 transition-colors rounded-full flex items-center gap-1.5 border border-emerald-500/20"
+                className="text-xs font-semibold px-4 py-2 min-h-[44px] bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 hover:text-emerald-200 transition-colors rounded-full flex items-center gap-1.5 border border-emerald-500/20"
               >
                 <Check size={14} />
                 Mark all Present
@@ -128,25 +128,25 @@ export default function MorningCheckin({ data }) {
                     <div className="flex flex-wrap gap-2 mt-3 pl-[30px]">
                       <button 
                         onClick={() => handleMark(cls.subject_id, 'present')}
-                        className="px-3 py-1.5 text-xs font-medium rounded-md bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-300 transition-colors border border-emerald-500/20"
+                        className="px-3 py-2 min-h-[44px] text-xs font-medium rounded-md bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-300 transition-colors border border-emerald-500/20 flex-1 sm:flex-none"
                       >
                         Present
                       </button>
                       <button 
                         onClick={() => handleMark(cls.subject_id, 'absent')}
-                        className="px-3 py-1.5 text-xs font-medium rounded-md bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 hover:text-rose-300 transition-colors border border-rose-500/20"
+                        className="px-3 py-2 min-h-[44px] text-xs font-medium rounded-md bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 hover:text-rose-300 transition-colors border border-rose-500/20 flex-1 sm:flex-none"
                       >
                         Absent
                       </button>
                       <button 
                         onClick={() => handleMark(cls.subject_id, 'late')}
-                        className="px-3 py-1.5 text-xs font-medium rounded-md bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-300 transition-colors border border-emerald-500/20"
+                        className="px-3 py-2 min-h-[44px] text-xs font-medium rounded-md bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-300 transition-colors border border-emerald-500/20 flex-1 sm:flex-none"
                       >
                         Late
                       </button>
                       <button 
                         onClick={() => handleMark(cls.subject_id, 'excused')}
-                        className="px-3 py-1.5 text-xs font-medium rounded-md bg-slate-500/10 text-slate-300 hover:bg-slate-500/20 hover:text-white transition-colors border border-slate-500/20"
+                        className="px-3 py-2 min-h-[44px] text-xs font-medium rounded-md bg-slate-500/10 text-slate-300 hover:bg-slate-500/20 hover:text-white transition-colors border border-slate-500/20 flex-1 sm:flex-none"
                       >
                         Excused
                       </button>

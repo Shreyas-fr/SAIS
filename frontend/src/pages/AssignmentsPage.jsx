@@ -212,19 +212,19 @@ export default function AssignmentsPage() {
   ].filter((item) => item.deadline)
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <motion.div
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="flex items-center justify-between mb-8"
+        className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 md:mb-8"
       >
         <div>
           <h1 className="font-display text-3xl text-white">Assignments</h1>
           <p className="text-slate-400 text-sm mt-1">{listItems.length} total</p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           {/* View Toggle */}
           <div className="flex items-center gap-1 bg-black/40 rounded-xl p-1 border border-white/10">
             <button
@@ -274,10 +274,10 @@ export default function AssignmentsPage() {
       ) : view === 'list' ? (
         <>
           {/* Filters */}
-          <div className="flex gap-3 mb-6">
+          <div className="flex flex-wrap gap-2 mb-6">
             {['', 'pending', 'in_progress', 'completed', 'overdue'].map(s => (
               <button key={s} onClick={() => setFilter(f => ({ ...f, status: s }))}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${filter.status === s ? 'bg-emerald-500 text-black' : 'bg-white/5 text-gray-400 hover:text-gray-200 border border-white/10'}`}>
+                className={`px-3 py-1.5 min-h-[36px] rounded-lg text-xs font-medium transition-all ${filter.status === s ? 'bg-emerald-500 text-black' : 'bg-white/5 text-gray-400 hover:text-gray-200 border border-white/10'}`}>
                 {s || 'All'}
               </button>
             ))}
@@ -291,7 +291,8 @@ export default function AssignmentsPage() {
           >
             {listItems.length === 0
               ? <div className="py-16 text-center"><BookOpen size={32} className="text-slate-600 mx-auto mb-3" /><p className="text-slate-500">No assignments yet</p></div>
-              : <table className="w-full">
+              : <div className="overflow-x-auto">
+                  <table className="w-full min-w-[640px]">
                 <thead>
                   <tr className="border-b border-white/10">
                     {['Title', 'Subject', 'Type', 'Estimate', 'Deadline', 'Priority', 'Status', ''].map(h => (
@@ -347,13 +348,14 @@ export default function AssignmentsPage() {
                         {a.sourceType === 'classroom' ? (
                           <span className="text-xs text-slate-600">—</span>
                         ) : (
-                          <button onClick={() => handleDelete(a.id)} className="text-slate-600 hover:text-red-400 transition-all"><Trash2 size={14} /></button>
+                          <button onClick={() => handleDelete(a.id)} className="text-slate-600 hover:text-red-400 transition-all p-2"><Trash2 size={14} /></button>
                         )}
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+            </div>
             }
           </motion.div>
 
@@ -377,7 +379,8 @@ export default function AssignmentsPage() {
                 {showDocs ? <ChevronUp size={16} className="text-slate-500" /> : <ChevronDown size={16} className="text-slate-500" />}
               </button>
               {showDocs && (
-                <table className="w-full">
+                <div className="overflow-x-auto">
+                  <table className="w-full min-w-[640px]">
                   <thead>
                     <tr className="border-t border-b border-slate-800">
                       {['File', 'Status', 'Extracted Title', 'Subject', 'Deadline', 'Est. Time', ''].map(h => (
@@ -426,7 +429,7 @@ export default function AssignmentsPage() {
                               onClick={() => handleReprocess(doc.id)}
                               disabled={reprocessingId === doc.id || doc.extraction_status === 'processing'}
                               title="Re-scrape document"
-                              className="flex items-center gap-1 text-xs text-gray-500 hover:text-emerald-400 disabled:opacity-40 transition-all"
+                              className="flex items-center gap-1 text-xs text-gray-500 hover:text-emerald-400 disabled:opacity-40 transition-all p-2"
                             >
                               <RefreshCw size={13} className={reprocessingId === doc.id ? 'animate-spin text-amber-400' : ''} />
                               {reprocessingId === doc.id ? 'Scraping...' : 'Re-scrape'}
@@ -437,6 +440,7 @@ export default function AssignmentsPage() {
                     })}
                   </tbody>
                 </table>
+                </div>
               )}
             </div>
           )}

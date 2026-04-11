@@ -113,7 +113,7 @@ export default function CourseMaterialsPage() {
   }, [lastSyncedAt])
 
   return (
-    <div className="p-8 max-w-5xl mx-auto">
+    <div className="p-4 md:p-8 max-w-5xl mx-auto">
       {/* ── Header ─────────────────────────────────────────── */}
       <motion.div
         initial={{ opacity: 0, y: -8 }}
@@ -145,7 +145,7 @@ export default function CourseMaterialsPage() {
 
       {/* ── Auth error banner ───────────────────────────────── */}
       {authError && (
-        <div className="mb-6 flex items-center justify-between bg-emerald-400/10 border border-emerald-400/30 rounded-xl px-5 py-4">
+        <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-emerald-400/10 border border-emerald-400/30 rounded-xl px-5 py-4">
           <div>
             <p className="text-emerald-300 font-semibold text-sm">
               {authError === 'expired'
