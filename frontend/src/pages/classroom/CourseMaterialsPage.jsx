@@ -3,13 +3,21 @@ import { motion } from 'framer-motion'
 import { useLocation } from 'react-router-dom'
 import {
   FileText, Link as LinkIcon, Youtube, Calendar,
-  RefreshCw, ExternalLink, BookOpen, FileQuestion,
+  RefreshCw, ExternalLink, BookOpen, FileQuestion, Search
 } from 'lucide-react'
 import client from '../../api/client'
 import toast from 'react-hot-toast'
 
 const CLASSROOM_MATERIALS_KEY = 'sais_classroom_materials'
 const CLASSROOM_LAST_SYNC_KEY = 'sais_classroom_last_sync'
+
+const TABS = [
+  { id: 'all', label: 'All' },
+  { id: 'drive', label: 'Files' },
+  { id: 'link', label: 'Links' },
+  { id: 'youtube', label: 'YouTube' },
+  { id: 'form', label: 'Forms' }
+]
 
 function MaterialIcon({ type }) {
   switch (type) {
@@ -42,6 +50,11 @@ export default function CourseMaterialsPage() {
   const [lastSyncedAt, setLastSyncedAt] = useState(null)
   const [loading, setLoading]         = useState(false)
   const [authError, setAuthError]     = useState(null) // 'not_connected' | 'expired' | null
+  
+  const [filterCourse, setFilterCourse] = useState('All Courses')
+  const [filterType, setFilterType] = useState('all')
+  const [sortOption, setSortOption] = useState('latest')
+  const [searchQuery, setSearchQuery] = useState('')
   const location = useLocation()
 
   // --- Load from localStorage on mount ---
@@ -112,6 +125,63 @@ export default function CourseMaterialsPage() {
     return new Date(lastSyncedAt).toLocaleString()
   }, [lastSyncedAt])
 
+  const distinctCourses = useMemo(() => {
+    const courses = new Set(materials.map(m => m.course).filter(Boolean))
+    return ['All Courses', ...Array.from(courses).sort()]
+  }, [materials])
+
+  const filteredAndSortedMaterials = useMemo(() => {
+    let result = [...materials]
+
+    if (filterCourse !== 'All Courses') {
+      result = result.filter(m => (m.course || '') === filterCourse)
+    }
+
+    if (filterType !== 'all') {
+      result = result.filter(m => {
+        const types = [
+          m.material_type,
+          m.source,
+          ...(m.attachments || []).map(a => a.type)
+        ].filter(Boolean).map(t => t.toLowerCase())
+        
+        if (filterType === 'drive') return types.some(t => t.includes('drive') || t.includes('file') || t.includes('assignment'))
+        if (filterType === 'youtube') return types.some(t => t.includes('youtube') || t.includes('video'))
+        if (filterType === 'link') return types.some(t => t.includes('link') || t.includes('url'))
+        if (filterType === 'form') return types.some(t => t.includes('form'))
+        return false
+      })
+    }
+
+    if (searchQuery.trim() !== '') {
+      const q = searchQuery.toLowerCase()
+      result = result.filter(m => 
+        (m.title && m.title.toLowerCase().includes(q)) ||
+        (m.description && m.description.toLowerCase().includes(q))
+      )
+    }
+
+    result.sort((a, b) => {
+      if (sortOption === 'latest' || sortOption === 'oldest') {
+        const timeA = new Date(a.creation_time || a.update_time || a.posted_at || a.due_date || 0).getTime()
+        const timeB = new Date(b.creation_time || b.update_time || b.posted_at || b.due_date || 0).getTime()
+        const diff = sortOption === 'latest' ? timeB - timeA : timeA - timeB
+        if (diff !== 0) return diff
+      }
+      
+      if (sortOption === 'az' || sortOption === 'za') {
+        const titleA = (a.title || '').toLowerCase()
+        const titleB = (b.title || '').toLowerCase()
+        const cmp = sortOption === 'az' ? titleA.localeCompare(titleB) : titleB.localeCompare(titleA)
+        if (cmp !== 0) return cmp
+      }
+      
+      return 0
+    })
+
+    return result
+  }, [materials, filterCourse, filterType, searchQuery, sortOption])
+
   return (
     <div className="p-4 md:p-8 max-w-5xl mx-auto">
       {/* ── Header ─────────────────────────────────────────── */}
@@ -167,6 +237,85 @@ export default function CourseMaterialsPage() {
         </div>
       )}
 
+      {/* ── Filters ─────────────────────────────────────────── */}
+      {materials.length > 0 && (
+        <motion.div 
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="flex flex-col gap-4 mb-6"
+        >
+          {/* Top row: Search, Course, Sort */}
+          <div className="flex flex-col sm:flex-row gap-3">
+             <div className="relative flex-1 min-w-[200px]">
+               <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+               <input
+                 type="text"
+                 placeholder="Search materials..."
+                 value={searchQuery}
+                 onChange={e => setSearchQuery(e.target.value)}
+                 className="w-full bg-black/40 text-slate-300 border border-white/10 rounded-xl pl-9 pr-3 py-2 text-sm focus:outline-none focus:border-emerald-500/50 placeholder:text-slate-500 transition-colors"
+               />
+             </div>
+             
+             <div className="flex flex-col sm:flex-row gap-3">
+               <div className="relative flex-1 sm:flex-initial">
+                 <select
+                   value={filterCourse}
+                   onChange={e => setFilterCourse(e.target.value)}
+                   className="w-full bg-black/40 text-slate-300 border border-white/10 rounded-xl pl-3 pr-8 py-2 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 appearance-none min-w-[160px] sm:max-w-[200px] truncate"
+                 >
+                   {distinctCourses.map(course => (
+                     <option key={course} value={course}>{course}</option>
+                   ))}
+                 </select>
+                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400">
+                   <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" fillRule="evenodd"></path></svg>
+                 </div>
+               </div>
+
+               <div className="relative flex-1 sm:flex-initial">
+                 <select
+                   value={sortOption}
+                   onChange={e => setSortOption(e.target.value)}
+                   className="w-full bg-black/40 text-slate-300 border border-white/10 rounded-xl pl-3 pr-8 py-2 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 appearance-none min-w-[140px]"
+                 >
+                   <option value="latest">Latest First</option>
+                   <option value="oldest">Oldest First</option>
+                   <option value="az">A–Z Title</option>
+                   <option value="za">Z–A Title</option>
+                 </select>
+                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400">
+                   <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" fillRule="evenodd"></path></svg>
+                 </div>
+               </div>
+             </div>
+          </div>
+          
+          {/* Bottom row: Type tabs & Results count */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mt-1">
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 w-full sm:w-auto" style={{ scrollbarWidth: 'none' }}>
+              {TABS.map(tab => (
+                <button
+                  key={tab.id}
+                  onClick={() => setFilterType(tab.id)}
+                  className={`px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                    filterType === tab.id 
+                      ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30' 
+                      : 'bg-black/40 text-slate-400 border border-white/5 hover:text-white hover:bg-white/10'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+            <div className="text-slate-500 text-sm whitespace-nowrap">
+              Showing <span className="text-emerald-400 font-medium">{filteredAndSortedMaterials.length}</span> of {materials.length} materials
+            </div>
+          </div>
+        </motion.div>
+      )}
+
       {/* ── Materials list ──────────────────────────────────── */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
@@ -183,11 +332,28 @@ export default function CourseMaterialsPage() {
           </div>
         ) : (
           <div className="space-y-3">
-            {materials.map((mat, idx) => {
-              const openUrl = mat.alternate_link || mat.attachments?.[0]?.url
+            {filteredAndSortedMaterials.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-16 text-center bg-black/20 rounded-2xl border border-white/5">
+                <Search size={40} className="text-slate-600 mb-3" />
+                <p className="text-slate-400 font-medium">No materials found for the selected filters</p>
+                <button 
+                  onClick={() => {
+                    setFilterCourse('All Courses')
+                    setFilterType('all')
+                    setSearchQuery('')
+                    setSortOption('latest')
+                  }}
+                  className="mt-4 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm transition-colors"
+                >
+                  Clear Filters
+                </button>
+              </div>
+            ) : (
+              filteredAndSortedMaterials.map((mat, idx) => {
+                const openUrl = mat.alternate_link || mat.attachments?.[0]?.url
               return (
                 <motion.div
-                  key={mat.id || idx}
+                  key={`${mat.id || 'mat'}-${idx}-${mat.course}`}
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: idx * 0.025 }}
@@ -254,7 +420,8 @@ export default function CourseMaterialsPage() {
                   </div>
                 </motion.div>
               )
-            })}
+            })
+            )}
           </div>
         )}
       </motion.div>
