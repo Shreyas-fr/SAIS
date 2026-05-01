@@ -25,6 +25,8 @@ spacy>=3.7.0
 pytesseract>=0.3.10
 Pillow>=10.4.0             # image processing
 pymupdf>=1.24.3            # PDF to image conversion (fitz)
+pandas>=2.0.0              # DataFrame for timetable grid extraction
+opencv-python-headless>=4.8.0 # Image processing for CV contours
 
 # Scheduling / Cron
 apscheduler>=3.10.4
