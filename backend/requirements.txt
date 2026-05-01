@@ -5,7 +5,7 @@ fastapi>=0.111.0
 uvicorn[standard]>=0.29.0
 
 # Database
-sqlalchemy>=2.0.30
+sqlalchemy[asyncio]>=2.0.30
 aiosqlite>=0.20.0          # async SQLite driver (local dev fallback)
 alembic>=1.13.1            # database migrations
 
