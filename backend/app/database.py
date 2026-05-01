@@ -24,6 +24,8 @@ engine = create_async_engine(settings.DATABASE_URL, **engine_kwargs)
 @event.listens_for(engine.sync_engine, "connect")
 def _set_sqlite_pragma(dbapi_conn, _connection_record):
     """Enable WAL journal mode and foreign keys for SQLite connections."""
+    if not settings.DATABASE_URL.startswith("sqlite"):
+        return
     cursor = dbapi_conn.cursor()
     cursor.execute("PRAGMA journal_mode=WAL")
     cursor.execute("PRAGMA foreign_keys=ON")
