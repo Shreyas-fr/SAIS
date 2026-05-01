@@ -15,7 +15,7 @@ passlib[bcrypt]>=1.7.4             # password hashing
 python-multipart>=0.0.9            # form/file upload support
 
 # Validation & Settings
-pydantic>=2.7.1
+pydantic[email]>=2.7.1
 pydantic-settings>=2.2.1
 
 # AI / NLP
