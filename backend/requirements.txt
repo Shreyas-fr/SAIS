@@ -19,7 +19,7 @@ pydantic>=2.7.1
 pydantic-settings>=2.2.1
 
 # AI / NLP
-# spaCy is optional at runtime; extractor falls back to regex/date parsing when unavailable
+spacy>=3.7.0
 
 # OCR
 pytesseract>=0.3.10
